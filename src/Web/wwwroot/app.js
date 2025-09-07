@@ -1,101 +1,21 @@
-// Data: allowable stress table [MPa] by material and temperature bands
-const allowableStressTable = {
-	"Сталь3 (до 20 мм)": {
-		points: { T: [20,100,150,200,250,300,350,375,400,410,420,425], sigma: [154,149,145,142,131,115,105,93,85,81,75,71] }
-	},
-	"Сталь3 (более 20 мм)": {
-		points: { T: [20,100,150,200,250,300,350,375,400,410,420,425], sigma: [140,134,131,126,120,108,98,93,85,81,75,71] }
-	},
-	"09Г2С (до 32 мм)": {
-		points: { T: [20,100,150,200,250,300,350,375,400,410,420,430,440,450,460,470,475], sigma: [196,177,171,165,162,151,140,133,122,104,92,86,78,71,64,56,53] }
-	},
-	"09Г2С (более 32 мм)": {
-		points: { T: [20,100,150,200,250,300,350,375,400,410,420,430,440,450,460,470,475], sigma: [183,160,154,148,145,134,123,116,105,104,92,86,78,71,64,56,53] }
-	},
-	"Сталь20": {
-		points: { T: [20,100,150,200,250,300,350,375,400,410,420,430,440,450,460,470,475], sigma: [147,142,139,136,132,119,106,98,92,86,80,75,67,61,55,49,46] }
-	},
-	"Сталь10": {
-		points: { T: [20,100,150,200,250,300,350,375,400,410,420,430,440,450,460,470,475], sigma: [130,125,122,118,112,100,88,82,77,75,72,68,60,53,47,42,37] }
-	},
-	"10Г2": {
-		points: { T: [20,100,150,200,250,300,350,375,400,410,420,430,440,450,460,470,475], sigma: [180,160,154,148,145,134,123,108,92,86,80,75,67,61,55,49,46] }
-	},
-	"17ГС": {
-		points: { T: [20,100,150,200,250,300,350,375,400,410,420,430,440,450,460,470,475], sigma: [183,160,154,148,145,134,123,116,105,104,92,86,78,71,64,56,53] }
-	},
-	"12ХМ": {
-		points: { T: [20,100,150,200,250,300,350,375,400,410,420,430,440,450,460,470,480,490,500,510,520,530,540,550,560], sigma: [147,146.6,146,145,145,141,137,135,132,130,129,127,126,126,126,117,114,105,96,82,69,60,50,41,33] }
-	},
-	"12МХ": {
-		points: { T: [20,100,150,200,250,300,350,375,400,410,420,430,440,450,460,470,480,490,500,510,520,530,540], sigma: [147,146.6,146,145,145,141,137,135,132,130,129,127,126,126,126,117,114,105,96,82,69,57,47] }
-	},
-	"15ХМ": {
-		points: { T: [20,100,150,200,250,300,350,375,400,410,420,430,440,450,460,470,480,490,500,510,520,530,540,550,560], sigma: [155,153,152.5,152,152,147,142,140,137,136,135,134,132,132,132,122,117,107,99,84,74,67,57,49,41] }
-	},
-	"AISI904L": {
-		points: { T: [20,100,150,200,250,300,350,375,400], sigma: [180,173,171,171,167,149,143,141,140] }
-	},
-	"AISI304L": {
-		points: { T: [20,100,150,200,250,300,350,375,400,410,420,430,440,450], sigma: [160,133,125,120,115,112,108,107,107,107,107,107,107,107] }
-	},
-	"AISI316L": {
-		points: { T: [20,100,150,200,250,300,350,375,400,410,420,430,440,450], sigma: [153,140,130,120,113,103,101,90,87,83,82,81,81,80] }
-	},
-	"08Х12Н10Т": {
-		points: { T: [20,100,150,200,250,300,350,375,400,410,420,430,440,450,460,470,480,490,500,510,520,530,540,550,560,570,580,590,600], sigma: [168,156,148,140,132,123,113,108,103,102,101,101.5,100,99,98,97.5,97,96,95,94,79,79,78,76,73,69,65,61,57] }
-	},
-	"12Х18Н10Т": {
-		points: { T: [20,100,150,200,250,300,350,375,400,410,420,430,440,450,460,470,480,490,500,510,520,530,540,550,560,570,580,590,600,610,620,630,640,650,660,670,680,690,700], sigma: [184,174,168,160,154,148,144,140,137,136,135,134,133,132,131,130,129,128,127,126,125,124,111,111,101,97,90,81,74,68,62,57,52,48,45,42,38,34,30] }
-	},
-};
+// Materials will be loaded from backend
+let materialProps = {};
+let materialsOrder = [];
 
-// Material properties for external pressure calculations
-const materialProperties = {
-	"Сталь3 (до 20 мм)": { E: 2.06e5, nu: 0.3 },
-	"Сталь3 (более 20 мм)": { E: 2.06e5, nu: 0.3 },
-	"09Г2С (до 32 мм)": { E: 2.06e5, nu: 0.3 },
-	"09Г2С (более 32 мм)": { E: 2.06e5, nu: 0.3 },
-	"Сталь20": { E: 2.06e5, nu: 0.3 },
-	"Сталь10": { E: 2.06e5, nu: 0.3 },
-	"10Г2": { E: 2.06e5, nu: 0.3 },
-	"17ГС": { E: 2.06e5, nu: 0.3 },
-	"12ХМ": { E: 2.06e5, nu: 0.3 },
-	"12МХ": { E: 2.06e5, nu: 0.3 },
-	"15ХМ": { E: 2.06e5, nu: 0.3 },
-	"AISI904L": { E: 2.00e5, nu: 0.3 },
-	"AISI304L": { E: 2.00e5, nu: 0.3 },
-	"AISI316L": { E: 2.00e5, nu: 0.3 },
-	"08Х12Н10Т": { E: 2.00e5, nu: 0.3 },
-	"12Х18Н10Т": { E: 2.00e5, nu: 0.3 },
-};
-
-function populateMaterials() {
-	const selects = document.querySelectorAll('select[name="material"]');
-	const order = [
-		"Сталь3 (до 20 мм)", 
-		"Сталь3 (более 20 мм)", 
-		"09Г2С (до 32 мм)", 
-		"09Г2С (более 32 мм)",
-		"Сталь20",
-		"Сталь10",
-		"10Г2",
-		"17ГС",
-		"12ХМ",
-		"12МХ",
-		"15ХМ",
-		"AISI904L",
-		"AISI304L",
-		"AISI316L",
-		"08Х12Н10Т",
-		"12Х18Н10Т"
-	];
-	selects.forEach(select => {
-		select.innerHTML = order
-			.filter((m) => allowableStressTable[m])
-			.map((m) => `<option value="${m}">${m}</option>`)
-			.join("");
-	});
+async function populateMaterials() {
+        const selects = document.querySelectorAll('select[name="material"]');
+        try {
+                const res = await fetch('/api/materials');
+                const items = await res.json();
+                materialsOrder = items.map(m => m.name);
+                materialProps = {};
+                selects.forEach(select => {
+                        select.innerHTML = items.map(m => `<option value="${m.name}">${m.name}</option>`).join('');
+                });
+                items.forEach(m => materialProps[m.name] = { E: m.e_MPa, nu: m.nu });
+        } catch (e) {
+                console.error('Materials load error', e);
+        }
 }
 
 function parseNumber(value) {
@@ -104,81 +24,64 @@ function parseNumber(value) {
 	return Number(normalized);
 }
 
-function interpolateSigma(points, T) {
-	const { T: temps, sigma: sigmas } = points;
-	if (!temps || temps.length === 0) return { sigma: NaN, exceeded: false, tLimit: NaN, used: null };
-	if (T <= temps[0]) return { sigma: sigmas[0], exceeded: false, tLimit: temps[temps.length - 1], used: { kind: 'edge', aT: temps[0], aS: sigmas[0] } };
-	if (T >= temps[temps.length - 1]) return { sigma: sigmas[sigmas.length - 1], exceeded: true, tLimit: temps[temps.length - 1], used: { kind: 'edge', aT: temps[temps.length - 1], aS: sigmas[sigmas.length - 1] } };
-	for (let i = 0; i < temps.length - 1; i++) {
-		const T1 = temps[i], T2 = temps[i+1];
-		if (T >= T1 && T <= T2) {
-			const S1 = sigmas[i], S2 = sigmas[i+1];
-			const k = (T - T1) / (T2 - T1);
-			const S = S1 + k * (S2 - S1);
-			return { sigma: S, exceeded: false, tLimit: temps[temps.length - 1], used: { kind: 'interp', T1, T2, S1, S2 } };
-		}
-	}
-	return { sigma: sigmas[sigmas.length - 1], exceeded: true, tLimit: temps[temps.length - 1], used: null };
+async function findAllowableStress(material, temperatureC) {
+        const res = await fetch('/api/materials/allowable-stress', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ material, temperatureC })
+        });
+        if (!res.ok) throw new Error('allowable stress error');
+        const data = await res.json();
+        return { sigma: data.sigmaAllow_MPa, exceeded: data.exceeded, tLimit: data.tLimitC };
 }
 
-function findAllowableStress(material, temperatureC) {
-	const table = allowableStressTable[material];
-	if (!table) return { sigma: NaN, exceeded: false, tLimit: NaN, meta: {} };
-	const res = interpolateSigma(table.points, temperatureC);
-	return { sigma: res.sigma, exceeded: res.exceeded, tLimit: res.tLimit, meta: { used: res.used } };
+async function calcThicknessInternalByDi(payload) {
+        const res = await fetch('/api/pressure/internal/thickness', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error('internal thickness error');
+        return res.json();
 }
 
-// Internal pressure calculations
-function calcThicknessInternalByDi({ Di_mm, P_MPa, sigmaAllow_MPa, weldEfficiency, corrosion_mm }) {
-	const denominator = 2 * sigmaAllow_MPa * weldEfficiency - P_MPa;
-	if (denominator <= 0) return { tRequired_mm: NaN, tTotal_mm: NaN };
-	const tRequired_mm = (P_MPa * Di_mm) / denominator;
-	const tTotal_mm = tRequired_mm + corrosion_mm;
-	return { tRequired_mm, tTotal_mm };
+async function calcAllowablePressureByDi(payload) {
+        const res = await fetch('/api/pressure/internal/allowable', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error('internal allowable error');
+        const data = await res.json();
+        return data.Pallow_MPa;
 }
 
-function calcAllowablePressureByDi({ Di_mm, tActual_mm, corrosion_mm, sigmaAllow_MPa, weldEfficiency }) {
-	const tEff = tActual_mm - corrosion_mm;
-	if (tEff <= 0) return NaN;
-	return (2 * sigmaAllow_MPa * weldEfficiency * tEff) / (Di_mm + tEff);
+async function calcThicknessExternalByDo(payload) {
+        const res = await fetch('/api/pressure/external/thickness', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error('external thickness error');
+        return res.json();
 }
 
-// External pressure calculations
-function calcThicknessExternalByDo({ Do_mm, P_MPa, E_MPa, nu, length_mm, corrosion_mm, safetyFactor = 1.5 }) {
-	const Do = Do_mm;
-	const L = length_mm;
-	const longCylinder = L / Do > 5;
-	const targetPcr = P_MPa * safetyFactor;
-	const k = longCylinder ? 2 : 1.5;
-	const n = longCylinder ? 3 : 2.5;
-	const tRequired_mm = Do * Math.pow((targetPcr * (1 - nu * nu)) / (k * E_MPa), 1 / n);
-	const tTotal_mm = tRequired_mm + corrosion_mm;
-	return { tRequired_mm, tTotal_mm, longCylinder };
+async function calcCriticalPressure(payload) {
+        const res = await fetch('/api/pressure/external/critical', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error('external critical error');
+        const data = await res.json();
+        return data.Pcr_MPa;
 }
 
-function calcCriticalPressure(Do, t, L, E, nu) {
-	const ratio = t / Do;
-	const longCylinder = L / Do > 5;
-	if (longCylinder) {
-		return 2 * E * Math.pow(ratio, 3) / (1 - nu * nu);
-	} else {
-		return 1.5 * E * Math.pow(ratio, 2.5) / (1 - nu * nu);
-	}
+async function calcPipeResistance(payload) {
+        const res = await fetch('/api/hydraulics/pipe-resistance', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error('pipe resistance error');
+        return res.json();
 }
 
-// Liquid height (by flow through holes)
-function calcLiquidHeight({ flow_m3_h, diameter_mm, holes, mu = 0.62 }) {
-        const g = 9.81;
-        if (!isFinite(flow_m3_h) || !isFinite(diameter_mm) || !isFinite(holes) ||
-                flow_m3_h <= 0 || diameter_mm <= 0 || holes <= 0) {
-                return { height: NaN, velocity: NaN };
-        }
-        const Q = flow_m3_h / 3600; // m^3/s
-        const d = diameter_mm / 1000; // m
-        const area = Math.PI * d * d / 4;
-        const velocity = Q / (area * holes);
-        const height = Math.pow(velocity / mu, 2) / (2 * g);
-        return { height, velocity };
+async function calcLiquidHeight(payload) {
+        const res = await fetch('/api/liquid/height', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error('liquid height error');
+        return res.json();
 }
 
 function formatNumber(value, digits = 3) {
@@ -186,35 +89,11 @@ function formatNumber(value, digits = 3) {
 	return value.toLocaleString(undefined, { maximumFractionDigits: digits });
 }
 
-function linearInterpolate(xs, ys, x) {
-	if (x <= xs[0]) return ys[0];
-	if (x >= xs[xs.length - 1]) return ys[ys.length - 1];
-	for (let i = 0; i < xs.length - 1; i++) {
-		if (x >= xs[i] && x <= xs[i + 1]) {
-			const t = (x - xs[i]) / (xs[i + 1] - xs[i]);
-			return ys[i] + t * (ys[i + 1] - ys[i]);
-		}
-	}
-	return ys[ys.length - 1];
-}
 
 const pipeFluids = {
-	water: {
-		tMin: 0.1,
-		tMax: 99,
-		density: (T) => 1000 * (1 - ((T + 288.9414) * Math.pow(T - 3.9863, 2)) / (508929.2 * (T + 68.12963))),
-		viscosity: (T) => 2.414e-5 * Math.pow(10, 247.8 / (T + 133.15)) // Pa*s
-	},
-	diesel: {
-		tMin: -25, tMax: 150,
-		density: (T) => linearInterpolate([-25, 20, 150], [860, 830, 720], T),
-		viscosity: (T) => linearInterpolate([-25, 20, 150], [0.02, 0.004, 0.0007], T)
-	},
-	gasoline: {
-		tMin: -30, tMax: 30,
-		density: (T) => linearInterpolate([-30, 0, 30], [760, 740, 720], T),
-		viscosity: (T) => linearInterpolate([-30, 0, 30], [0.005, 0.0014, 0.0006], T)
-	}
+        water: { tMin: 0.1, tMax: 99 },
+        diesel: { tMin: -25, tMax: 150 },
+        gasoline: { tMin: -30, tMax: 30 }
 };
 
 const pipeFluidNames = {
@@ -350,72 +229,38 @@ function buildExternalReportHTML(params) {
 function buildExternalExportHTML(params){ return buildExternalReportHTML(params); }
 
 // ===== Materials comparison table =====
-function updateMaterialsComparisonTable(DiActual, T, P, c, phi) {
+async function updateMaterialsComparisonTable(DiActual, T, P, c, phi) {
 const tbody = document.getElementById('materials-tbody');
 if (!tbody) return;
 if (![DiActual, T, P, c, phi].every(isFinite)) return;
-
-const materialsOrder = [
-"Сталь3 (до 20 мм)",
-"Сталь3 (более 20 мм)",
-"09Г2С (до 32 мм)",
-"09Г2С (более 32 мм)",
-"Сталь20",
-"Сталь10",
-"10Г2",
-"17ГС",
-"12ХМ",
-"12МХ",
-"15ХМ",
-"AISI904L",
-"AISI304L",
-"AISI316L",
-"08Х12Н10Т",
-"12Х18Н10Т"
-];
-
 let html = '';
-
-materialsOrder.forEach(materialName => {
-const thicknessForStress = 20;
-const stress = findAllowableStress(materialName, T, thicknessForStress);
-const sigma = stress.sigma;
-const isApplicable = !stress.exceeded && isFinite(sigma) && sigma > 0;
-
-let thickness = '—';
-let status = '';
-
-if (isApplicable) {
-const { tRequired_mm } = calcThicknessInternalByDi({
-Di_mm: DiActual,
-P_MPa: P,
-sigmaAllow_MPa: sigma,
-weldEfficiency: phi,
-corrosion_mm: c,
-});
-if (isFinite(tRequired_mm) && tRequired_mm > 0) {
-thickness = formatNumber(tRequired_mm, 3);
-status = '<span class="status-valid">✓</span>';
-} else {
-status = '<span class="status-invalid">—</span>';
+for (const materialName of materialsOrder) {
+    const stress = await findAllowableStress(materialName, T);
+    const sigma = stress.sigma;
+    const isApplicable = !stress.exceeded && isFinite(sigma) && sigma > 0;
+    let thickness = '—';
+    let status = '';
+    if (isApplicable) {
+        const { tRequired_mm } = await calcThicknessInternalByDi({
+            Di_mm: DiActual,
+            P_MPa: P,
+            sigmaAllow_MPa: sigma,
+            weldEfficiency: phi,
+            corrosion_mm: c,
+        });
+        if (isFinite(tRequired_mm) && tRequired_mm > 0) {
+            thickness = formatNumber(tRequired_mm, 3);
+            status = '<span class="status-valid">✓</span>';
+        } else {
+            status = '<span class="status-invalid">—</span>';
+        }
+    } else {
+        status = '<span class="status-cross">❌</span>';
+    }
+    html += `<tr><td class="material-name">${materialName}</td><td class="material-stress">${isApplicable ? formatNumber(sigma,0) : '—'}</td><td class="material-thickness">${thickness}</td><td class="material-status">${status}</td></tr>`;
 }
-} else {
-status = '<span class="status-cross">❌</span>';
-}
-
-html += `
-<tr>
-<td class="material-name">${materialName}</td>
-<td class="material-stress">${isApplicable ? formatNumber(sigma, 0) : '—'}</td>
-<td class="material-thickness">${thickness}</td>
-<td class="material-status">${status}</td>
-</tr>
-`;
-});
-
 tbody.innerHTML = html;
 }
-
 // ===== Internal pressure form wiring =====
 function wireInternalCalc() {
 const form = document.getElementById('form-internal');
@@ -432,7 +277,7 @@ const warnBox = document.getElementById('temp-warning');
 const report = document.getElementById('report-content');
 const printSource = document.getElementById('print-source');
 
-const doCalc = () => {
+const doCalc = async () => {
 const DiActual = parseNumber(form.Di_actual.value);
 const T = parseNumber(form.temperature.value);
 const tActual = parseNumber(form.t_actual.value);
@@ -441,16 +286,16 @@ const c = parseNumber(form.corrosion.value || '0');
 const phi = parseNumber(form.weld_eff.value || '1');
 const material = form.material.value;
 
-const stress = findAllowableStress(material, T, tActual);
+const stress = await findAllowableStress(material, T);
 const sigma = stress.sigma;
-const { tRequired_mm, tTotal_mm } = calcThicknessInternalByDi({
+const { tRequired_mm, tTotal_mm } = await calcThicknessInternalByDi({
 Di_mm: DiActual,
 P_MPa: P,
 sigmaAllow_MPa: sigma,
 weldEfficiency: phi,
 corrosion_mm: c,
 });
-const Pallow = calcAllowablePressureByDi({
+const Pallow = await calcAllowablePressureByDi({
 Di_mm: DiActual,
 tActual_mm: tActual,
 corrosion_mm: c,
@@ -478,7 +323,7 @@ resDoAct.textContent = formatNumber(DoAct, 3);
 resPAllow.textContent = formatNumber(Pallow, 3);
 resSafety.textContent = isFinite(safety) ? `${formatNumber(safety, 2)} %` : '—';
 
-updateMaterialsComparisonTable(DiActual, T, P, c, phi);
+await updateMaterialsComparisonTable(DiActual, T, P, c, phi);
 
 const reportHTML = buildReportHTML({
 material, T, DiActual, tActual, P, c, phi,
@@ -538,7 +383,7 @@ const warnBox = document.getElementById('temp-warning-ext');
 const report = document.getElementById('report-content-ext');
 const printSource = document.getElementById('print-source-ext');
 
-const doCalc = () => {
+const doCalc = async () => {
 const DoActual = parseNumber(form.Do_actual.value);
 const T = parseNumber(form.temperature.value);
 const tActual = parseNumber(form.t_actual.value);
@@ -547,20 +392,20 @@ const c = parseNumber(form.corrosion.value || '0');
 const length = parseNumber(form.length.value);
 const material = form.material.value;
 
-const stress = findAllowableStress(material, T, tActual);
+const stress = await findAllowableStress(material, T);
 const sigma = stress.sigma;
-const materialProps = materialProperties[material] || { E: 2.06e5, nu: 0.3 };
+const props = materialProps[material] || { E: 2.06e5, nu: 0.3 };
 
-const { tRequired_mm, tTotal_mm, longCylinder } = calcThicknessExternalByDo({
+const { tRequired_mm, tTotal_mm, longCylinder } = await calcThicknessExternalByDo({
 Do_mm: DoActual,
 P_MPa: P,
-E_MPa: materialProps.E,
-nu: materialProps.nu,
+E_MPa: props.E,
+nu: props.nu,
 length_mm: length,
 corrosion_mm: c,
 });
 
-const Pcr = calcCriticalPressure(DoActual, tActual - c, length, materialProps.E, materialProps.nu);
+const Pcr = await calcCriticalPressure({ Do_mm: DoActual, tActual_mm: tActual, corrosion_mm: c, length_mm: length, E_MPa: props.E, nu: props.nu });
 const DiReq = isFinite(tRequired_mm) ? DoActual - 2 * tRequired_mm : NaN;
 const DiAct = isFinite(tActual) && isFinite(DoActual) ? DoActual - 2 * tActual : NaN;
 const safety = isFinite(tRequired_mm) && isFinite(tActual) && tActual !== 0 ? (100 - (tRequired_mm / tActual) * 100) : NaN;
@@ -696,50 +541,40 @@ function wirePipeResistanceCalc() {
 	tempInput.addEventListener('input', () => tempDisplay.textContent = parseNumber(tempInput.value).toFixed(1));
 	updateTempSlider();
 
-	const doCalc = () => {
-		const fluid = fluidSelect.value;
-		const T = parseNumber(tempInput.value);
-               const L = parseNumber(form.length.value);
-               const D = parseNumber(form.diameter.value) / 1000;
-		const roughType = form.roughness.value;
-               const eps = roughnessValues[roughType];
-               const Q = parseNumber(form.flow.value); // m3/h
-               const Qs = Q / 3600; // m3/s
-               const area = Math.PI * D * D / 4;
-               const v = Qs / area; // m/s
-
-		const rho = pipeFluids[fluid].density(T);
-		const mu = pipeFluids[fluid].viscosity(T);
-               const Re = rho * v * D / mu;
-               let lambda = NaN;
-               if (Re > 0) {
-                       if (Re < 2300) lambda = 64 / Re;
-                       else lambda = 0.25 / Math.pow(Math.log10((eps / (3.7 * D)) + (5.74 / Math.pow(Re, 0.9))), 2);
-               }
-               const epsRel = eps / D;
-               const deltaP = lambda * (L / D) * 0.5 * rho * v * v;
-
-		resDensity.textContent = formatNumber(rho, 1);
-		resViscosity.textContent = formatNumber(mu, 6);
-		resVelocity.textContent = formatNumber(v, 3);
-		resRe.textContent = formatNumber(Re, 0);
-               resLambda.textContent = formatNumber(lambda, 5);
-               resRelative.textContent = formatNumber(epsRel, 6);
-               resDeltaP.textContent = formatNumber(deltaP, 2);
-
-               const reportHTML = buildPipeResistanceReportHTML({
-                       fluidName: pipeFluidNames[fluid], T, L, D,
-                       roughnessName: roughnessNames[roughType], roughnessValue: eps,
-                       flow: Q, velocity: v, rho, mu, Re, lambda, relativeRoughness: epsRel, deltaP
-               });
-               const exportHTML = buildPipeResistanceExportHTML({
-                       fluidName: pipeFluidNames[fluid], T, L, D,
-                       roughnessName: roughnessNames[roughType], roughnessValue: eps,
-                       flow: Q, velocity: v, rho, mu, Re, lambda, relativeRoughness: epsRel, deltaP
-               });
-               report.innerHTML = reportHTML;
-               printSource.innerHTML = exportHTML;
-               if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([report, printSource]).catch(() => {});
+        const doCalc = async () => {
+                const fluid = fluidSelect.value;
+                const T = parseNumber(tempInput.value);
+                const L = parseNumber(form.length.value);
+                const D = parseNumber(form.diameter.value) / 1000;
+                const roughType = form.roughness.value;
+                const eps = roughnessValues[roughType];
+                const Q = parseNumber(form.flow.value);
+                try {
+                        const data = await calcPipeResistance({ fluidId: fluid, T_C: T, L_m: L, D_m: D, eps_m: eps, Q_m3h: Q });
+                        const { rho_kg_m3, mu_Pa_s, velocity_m_s, Re, lambda, relativeRoughness, deltaP_Pa } = data;
+                        resDensity.textContent = formatNumber(rho_kg_m3, 1);
+                        resViscosity.textContent = formatNumber(mu_Pa_s, 6);
+                        resVelocity.textContent = formatNumber(velocity_m_s, 3);
+                        resRe.textContent = formatNumber(Re, 0);
+                        resLambda.textContent = formatNumber(lambda, 5);
+                        resRelative.textContent = formatNumber(relativeRoughness, 6);
+                        resDeltaP.textContent = formatNumber(deltaP_Pa, 2);
+                        const reportHTML = buildPipeResistanceReportHTML({
+                                fluidName: pipeFluidNames[fluid], T, L, D,
+                                roughnessName: roughnessNames[roughType], roughnessValue: eps,
+                                flow: Q, velocity: velocity_m_s, rho: rho_kg_m3, mu: mu_Pa_s, Re, lambda, relativeRoughness, deltaP: deltaP_Pa
+                        });
+                        const exportHTML = buildPipeResistanceExportHTML({
+                                fluidName: pipeFluidNames[fluid], T, L, D,
+                                roughnessName: roughnessNames[roughType], roughnessValue: eps,
+                                flow: Q, velocity: velocity_m_s, rho: rho_kg_m3, mu: mu_Pa_s, Re, lambda, relativeRoughness, deltaP: deltaP_Pa
+                        });
+                        report.innerHTML = reportHTML;
+                        printSource.innerHTML = exportHTML;
+                        if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([report, printSource]).catch(() => {});
+                } catch (e) {
+                        alert('Ошибка: ' + e.message);
+                }
         };
 
        btn.addEventListener('click', doCalc);
@@ -908,27 +743,32 @@ function wireLiquidHeightCalc() {
 
 	if (!form) return;
 
-	const doCalc = () => {
+        const doCalc = async () => {
                 const flow = parseNumber(form.flow.value);
                 const diameter = parseNumber(form.diameter.value);
                 const holes = parseNumber(form.holes.value);
-                const { height, velocity } = calcLiquidHeight({ flow_m3_h: flow, diameter_mm: diameter, holes });
-                resVelocity.textContent = formatNumber(velocity, 3);
-                resHeightMm.textContent = formatNumber(height * 1000, 3);
+                try {
+                        const data = await calcLiquidHeight({ flow_m3_h: flow, diameter_mm: diameter, holes });
+                        const height = data.height_m;
+                        const velocity = data.velocity_m_s;
+                        resVelocity.textContent = formatNumber(velocity, 3);
+                        resHeightMm.textContent = formatNumber(height * 1000, 3);
+                        const Qs = flow / 3600;
+                        const holeCounts = [2,3,4,5,6].map(d => {
+                                const area = Math.PI * Math.pow(d/1000,2) / 4;
+                                return { d, n: Qs / (velocity * area) };
+                        });
+                        resHoleCounts.innerHTML = `<table class="results-table"><thead><tr><th>Диаметр, мм</th><th>Кол-во, шт.</th></tr></thead><tbody>${holeCounts.map(h=>`<tr><td>${h.d}</td><td>${formatNumber(h.n,0)}</td></tr>`).join('')}</tbody></table>`;
 
-                const Qs = flow / 3600;
-                const holeCounts = [2,3,4,5,6].map(d => {
-                        const area = Math.PI * Math.pow(d/1000,2) / 4;
-                        return { d, n: Qs / (velocity * area) };
-                });
-                resHoleCounts.innerHTML = `<table class="results-table"><thead><tr><th>Диаметр, мм</th><th>Кол-во, шт.</th></tr></thead><tbody>${holeCounts.map(h=>`<tr><td>${h.d}</td><td>${formatNumber(h.n,0)}</td></tr>`).join('')}</tbody></table>`;
-
-                const reportHTML = buildLiquidReportHTML({ flow, diameter, holes, height, velocity, holeCounts });
-                const exportHTML = buildLiquidExportHTML({ flow, diameter, holes, height, velocity, holeCounts });
-                report.innerHTML = reportHTML;
-                printSource.innerHTML = exportHTML;
-                if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([report, printSource]).catch(()=>{});
-	};
+                        const reportHTML = buildLiquidReportHTML({ flow, diameter, holes, height, velocity, holeCounts });
+                        const exportHTML = buildLiquidExportHTML({ flow, diameter, holes, height, velocity, holeCounts });
+                        report.innerHTML = reportHTML;
+                        printSource.innerHTML = exportHTML;
+                        if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([report, printSource]).catch(()=>{});
+                } catch (e) {
+                        alert('Ошибка: ' + e.message);
+                }
+        };
        btn.addEventListener('click', doCalc);
        form.addEventListener('keydown', e => {
                if (e.key === 'Enter') { e.preventDefault(); doCalc(); }
