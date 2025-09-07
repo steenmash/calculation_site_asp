@@ -10,14 +10,14 @@ public static class HydraulicsService
     private static readonly Dictionary<string, Fluid> Fluids = new()
     {
         ["water"] = new Fluid(tMin:0.1, tMax:99,
-            density: T => 1000 * (1 - ((T + 288.9414) * (T - 3.9863) * (T - 3.9863)) / (508929.2 * (T + 68.12963))),
-            viscosity: T => 2.414e-5 * Math.Pow(10, 247.8 / (T + 133.15))),
+            Density: T => 1000 * (1 - ((T + 288.9414) * (T - 3.9863) * (T - 3.9863)) / (508929.2 * (T + 68.12963))),
+            Viscosity: T => 2.414e-5 * Math.Pow(10, 247.8 / (T + 133.15))),
         ["diesel"] = new Fluid(tMin:-25, tMax:150,
-            density: T => LinearInterpolate(new double[]{-25,20,150}, new double[]{860,830,720}, T),
-            viscosity: T => LinearInterpolate(new double[]{-25,20,150}, new double[]{0.02,0.004,0.0007}, T)),
+            Density: T => LinearInterpolate(new double[]{-25,20,150}, new double[]{860,830,720}, T),
+            Viscosity: T => LinearInterpolate(new double[]{-25,20,150}, new double[]{0.02,0.004,0.0007}, T)),
         ["gasoline"] = new Fluid(tMin:-30, tMax:30,
-            density: T => LinearInterpolate(new double[]{-30,0,30}, new double[]{760,740,720}, T),
-            viscosity: T => LinearInterpolate(new double[]{-30,0,30}, new double[]{0.005,0.0014,0.0006}, T))
+            Density: T => LinearInterpolate(new double[]{-30,0,30}, new double[]{760,740,720}, T),
+            Viscosity: T => LinearInterpolate(new double[]{-30,0,30}, new double[]{0.005,0.0014,0.0006}, T))
     };
 
     private static double LinearInterpolate(double[] xs, double[] ys, double x)
