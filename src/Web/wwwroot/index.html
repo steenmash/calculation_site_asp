@@ -1,667 +1,662 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Расчеты</title>
-	<link rel="stylesheet" href="styles.css">
-	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SteenMash — Змішувальні комплекси та інженерні рішення</title>
+        <meta name="description" content="SteenMash — український виробник змішувальних установок, бетонних та асфальтобетонних заводів з повним циклом сервісу.">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="styles.css">
+        <script defer src="app.js"></script>
 </head>
 <body>
-	<div class="container">
-		<aside class="sidebar">
-			<div class="sidebar-header">
-				Расчеты
-			</div>
-			<div class="tree">
-				<div class="tree-folder" data-folder="tech">
-					<div class="folder-header">
-						<span class="folder-icon">📁</span>
-						<span class="folder-name">Технологические расчеты</span>
-						<span class="folder-toggle">▼</span>
-					</div>
-					<div class="folder-content">
-                                                <div class="tree-item active" data-calc="velocity">
-                                                        <span class="item-icon">📄</span>
-                                                        <span>Расчет скорости в трубопроводах</span>
-                                                </div>
-						<div class="tree-item" data-calc="pipe-mass">
-							<span class="item-icon">📄</span>
-							<span>Масса трубы</span>
-						</div>
-					</div>
-				</div>
-				
-				<div class="tree-folder" data-folder="hydraulic">
-					<div class="folder-header">
-						<span class="folder-icon">📁</span>
-						<span class="folder-name">Гидравлические расчеты</span>
-						<span class="folder-toggle">▼</span>
-					</div>
-					<div class="folder-content">
-                                               <div class="tree-item" data-calc="liquid-height">
-                                                       <span class="item-icon">📄</span>
-                                                       <span>Расчет высоты слоя жидкости над распределительной тарелкой</span>
-                                               </div>
-						<div class="tree-item" data-calc="pipe-resistance">
-							<span class="item-icon">📄</span>
-							<span>Расчет гидравлического сопротивления в трубе</span>
-						</div>
-					</div>
-				</div>
-				
-				<div class="tree-folder" data-folder="thermal">
-					<div class="folder-header">
-						<span class="folder-icon">📁</span>
-						<span class="folder-name">Теплотехнические расчеты</span>
-						<span class="folder-toggle">▼</span>
-					</div>
-					<div class="folder-content">
-						<div class="tree-item" data-calc="gas-calorific">
-							<span class="item-icon">📄</span>
-							<span>Расчет калорийности газа</span>
-						</div>
-					</div>
-				</div>
-				
-				<div class="tree-folder" data-folder="strength">
-					<div class="folder-header">
-						<span class="folder-icon">📁</span>
-						<span class="folder-name">Расчеты на прочность</span>
-						<span class="folder-toggle">▼</span>
-					</div>
-					<div class="folder-content">
-						<div class="tree-item" data-calc="thickness-internal">
-							<span class="item-icon">📄</span>
-							<span>Расчет толщины стенки нагруженной внутренним давлением</span>
-						</div>
-						<div class="tree-item" data-calc="thickness-external">
-							<span class="item-icon">📄</span>
-							<span>Расчет толщины стенки нагруженной внешним давлением</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</aside>
-		
-		<main class="content">
-			<!-- Расчет толщины стенки (внутреннее давление) -->
-                         <div id="view-thickness-internal" class="calc-view">
-				<div class="calc-header">
-					<h1>Расчет толщины стенки нагруженной внутренним давлением</h1>
-				</div>
-				
-				<div class="calc-content">
-					<!-- Секция 1: Ввод исходных данных -->
-					<div class="calc-section input-section">
-						<div class="section-header">
-							<h3>📝 Исходные данные</h3>
-						</div>
-						<div class="section-content">
-							<form id="form-internal">
-								<div class="form-group">
-									<label for="material">Материал:</label>
-									<select name="material" required>
-										<option value="">Выберите материал</option>
-									</select>
-								</div>
-								
-								<div class="form-group">
-									<label for="temperature">Температура, °C:</label>
-									<input type="number" name="temperature" step="0.1" required>
-								</div>
-								
-								<div class="form-group">
-									<label for="Di_actual">Фактический внутренний диаметр, мм:</label>
-									<input type="number" name="Di_actual" step="0.1" required>
-								</div>
-								
-								<div class="form-group">
-									<label for="t_actual">Фактическая толщина стенки, мм:</label>
-									<input type="number" name="t_actual" step="0.1" required>
-								</div>
-								
-								<div class="form-group">
-									<label for="pressure">Расчетное давление, МПа:</label>
-									<input type="number" name="pressure" step="0.001" required>
-								</div>
-								
-								<div class="form-group">
-									<label for="corrosion">Прибавка на коррозию, мм:</label>
-									<input type="number" name="corrosion" step="0.1" value="0">
-								</div>
-								
-								<div class="form-group">
-									<label for="weld_eff">Коэффициент прочности сварного шва:</label>
-									<input type="number" name="weld_eff" step="0.001" value="1" min="0" max="1">
-								</div>
-								
-								<div class="warning-box" id="temp-warning" style="display: none;"></div>
-								
-								<div class="form-actions">
-									<button type="button" id="btn-calc-internal" class="btn-calc">Выполнить расчет</button>
-									<button type="reset" class="btn-reset">Сбросить</button>
-								</div>
-							</form>
-						</div>
-					</div>
-					
-					<!-- Секция 2: Результаты расчетов -->
-					<div class="calc-section results-section">
-						<div class="section-header">
-							<h3>📊 Результаты расчетов</h3>
-						</div>
-						<div class="section-content">
-							<div class="calc-results">
-								<h4>Основные результаты:</h4>
-								<table class="results-table">
-									<tr><td>Допускаемое напряжение [σ]:</td><td id="res-sigma">—</td></tr>
-									<tr><td>Расчетная толщина стенки:</td><td id="res-t-req">—</td></tr>
-									<tr><td>Общая толщина (с коррозией):</td><td id="res-t-total">—</td></tr>
-									<tr><td>Наружный диаметр (расчетный):</td><td id="res-Do-req">—</td></tr>
-									<tr><td>Наружный диаметр (фактический):</td><td id="res-Do-act">—</td></tr>
-									<tr><td>Допустимое давление:</td><td id="res-p-allow">—</td></tr>
-									<tr><td>Запас по толщине:</td><td id="res-safety">—</td></tr>
-								</table>
-							</div>
-							
-							<div class="materials-comparison">
-								<h4>Сравнение материалов:</h4>
-								<div id="materials-table-container">
-									<table class="materials-comparison-table" id="materials-comparison-table">
-										<thead>
-											<tr>
-												<th>Материал</th>
-												<th>[σ], МПа</th>
-												<th>Толщина стенки, мм</th>
-												<th>Статус</th>
-											</tr>
-										</thead>
-										<tbody id="materials-tbody">
-											<!-- Заполняется JavaScript -->
-										</tbody>
-									</table>
-								</div>
-								<div class="legend">
-									<span class="legend-item">
-										<span class="legend-cross">❌</span>
-										<span>Материал не применим при данной температуре</span>
-									</span>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<!-- Секция 3: Предварительный просмотр PDF -->
-					<div class="calc-section pdf-preview-section">
-						<div class="section-header">
-							<h3>📄 Предварительный просмотр отчета</h3>
-							<button id="btn-export-pdf" class="btn-export">Экспорт в PDF</button>
-						</div>
-						<div class="section-content">
-							<div id="report-content" class="report-body"></div>
-							<div id="print-source" class="report-print" style="position:absolute; left:-9999px; top:-9999px; width:800px; visibility:hidden;"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Расчет толщины стенки (внешнее давление) -->
-                        <div id="view-thickness-external" class="calc-view">
-                                <div class="calc-header">
-                                        <h1>Расчет толщины стенки нагруженной внешним давлением</h1>
-                                </div>
-
-                                <div class="calc-content">
-                                        <!-- Секция 1: Ввод исходных данных -->
-                                        <div class="calc-section input-section">
-                                                <div class="section-header">
-                                                        <h3>📝 Исходные данные</h3>
-                                                </div>
-                                                <div class="section-content">
-                                                        <form id="form-external">
-                                                                <div class="form-group">
-                                                                        <label for="material-ext">Материал:</label>
-                                                                        <select name="material" required>
-                                                                                <option value="">Выберите материал</option>
-                                                                        </select>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                        <label for="temperature-ext">Температура, °C:</label>
-                                                                        <input type="number" name="temperature" step="0.1" required>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                        <label for="Do_actual">Фактический наружный диаметр, мм:</label>
-                                                                        <input type="number" name="Do_actual" step="0.1" required>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                        <label for="t_actual-ext">Фактическая толщина стенки, мм:</label>
-                                                                        <input type="number" name="t_actual" step="0.1" required>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                        <label for="pressure-ext">Расчетное внешнее давление, МПа:</label>
-                                                                        <input type="number" name="pressure" step="0.001" required>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                        <label for="corrosion-ext">Прибавка на коррозию, мм:</label>
-                                                                        <input type="number" name="corrosion" step="0.1" value="0">
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                        <label for="length">Расчетная длина обечайки, мм:</label>
-                                                                        <input type="number" name="length" step="1" required>
-                                                                </div>
-
-                                                                <div class="warning-box" id="temp-warning-ext" style="display: none;"></div>
-
-                                                                <div class="form-actions">
-                                                                        <button type="button" id="btn-calc-external" class="btn-calc">Выполнить расчет</button>
-                                                                        <button type="reset" class="btn-reset">Сбросить</button>
-                                                                </div>
-                                                        </form>
-                                                </div>
+        <div class="page" id="top">
+                <header class="site-header" data-header>
+                        <div class="header-top">
+                                <div class="container wide">
+                                        <span class="header-top__tagline">Виробництво і сервіс змішувальних комплексів для промисловості та будівництва</span>
+                                        <div class="header-top__info">
+                                                <a class="contact-link" href="tel:+380441111111" aria-label="Зателефонувати SteenMash">+38 (044) 111-11-11</a>
+                                                <a class="contact-link" href="mailto:info@steenmash.com.ua" aria-label="Написати листа">info@steenmash.com.ua</a>
+                                                <nav class="lang-switcher" aria-label="Мова сайту">
+                                                        <button type="button" class="lang-switcher__item is-active">UA</button>
+                                                        <button type="button" class="lang-switcher__item" disabled>EN</button>
+                                                        <button type="button" class="lang-switcher__item" disabled>PL</button>
+                                                </nav>
                                         </div>
-
-                                        <!-- Секция 2: Результаты расчетов -->
-                                        <div class="calc-section results-section">
-                                                <div class="section-header">
-                                                        <h3>📊 Результаты расчетов</h3>
-                                                </div>
-                                                <div class="section-content">
-                                                        <div class="calc-results">
-                                                                <table class="results-table">
-                                                                        <tr><td>Допускаемое напряжение [σ]:</td><td id="res-sigma-ext">—</td></tr>
-                                                                        <tr><td>Модуль упругости E:</td><td id="res-E">—</td></tr>
-                                                                        <tr><td>Критическое давление Pкр:</td><td id="res-Pcr">—</td></tr>
-                                                                        <tr><td>Расчетная толщина стенки:</td><td id="res-t-req-ext">—</td></tr>
-                                                                        <tr><td>Общая толщина (с коррозией):</td><td id="res-t-total-ext">—</td></tr>
-                                                                        <tr><td>Внутренний диаметр (расчетный):</td><td id="res-Di-req">—</td></tr>
-                                                                        <tr><td>Внутренний диаметр (фактический):</td><td id="res-Di-act">—</td></tr>
-                                                                        <tr><td>Запас по толщине:</td><td id="res-safety-ext">—</td></tr>
-                                                                </table>
-                                                        </div>
-                                                </div>
-                                        </div>
-
-                                        <!-- Секция 3: Предварительный просмотр PDF -->
-                                        <div class="calc-section pdf-preview-section">
-                                                <div class="section-header">
-                                                        <h3>📄 Предварительный просмотр отчета</h3>
-                                                        <button id="btn-export-pdf-external" class="btn-export">Экспорт в PDF</button>
-                                                </div>
-                                                <div class="section-content">
-                                                        <div id="report-content-ext" class="report-body"></div>
-                                                        <div id="print-source-ext" class="report-print" style="position:absolute; left:-9999px; top:-9999px; width:800px; visibility:hidden;"></div>
-                                                </div>
-                                        </div>
-
                                 </div>
                         </div>
-
-			<!-- Заглушки для остальных расчетов -->
-                        <div id="view-velocity" class="calc-view visible">
-                                <div class="calc-header">
-                                        <h1>Расчет скорости в трубопроводах</h1>
-                                </div>
-                                <div class="calc-content">
-                                        <div class="calc-section input-section">
-                                                <div class="section-header">
-                                                        <h3>📝 Исходные данные</h3>
-                                                </div>
-                                                <div class="section-content">
-                                                        <form id="form-velocity">
-                                                                <div class="form-group">
-                                                                        <label for="flow">Объемный расход, м³/час:</label>
-                                                                        <input type="number" name="flow" step="0.001" required>
-                                                                </div>
-                                                                <div class="form-actions">
-                                                                        <button type="button" id="btn-calc-velocity" class="btn-calc">Выполнить расчет</button>
-                                                                        <button type="reset" class="btn-reset">Сбросить</button>
-                                                                </div>
-                                                        </form>
-                                                </div>
+                        <div class="header-main">
+                                <div class="container wide">
+                                        <a class="logo" href="#home" data-scroll aria-label="Перейти на головний блок">
+                                                <span class="logo__mark">Steen</span><span class="logo__mark logo__mark--accent">Mash</span>
+                                        </a>
+                                        <nav class="site-nav" id="primary-navigation" data-nav>
+                                                <ul>
+                                                        <li><a href="#home" data-scroll class="is-active">Головна</a></li>
+                                                        <li><a href="#about" data-scroll>Про компанію</a></li>
+                                                        <li><a href="#solutions" data-scroll>Рішення</a></li>
+                                                        <li><a href="#catalog" data-scroll>Каталог</a></li>
+                                                        <li><a href="#projects" data-scroll>Проєкти</a></li>
+                                                        <li><a href="#news" data-scroll>Новини</a></li>
+                                                        <li><a href="#contact" data-scroll>Контакти</a></li>
+                                                </ul>
+                                        </nav>
+                                        <div class="header-actions">
+                                                <button class="btn btn-outline" type="button" data-scroll-target="#catalog">Каталог</button>
+                                                <a class="btn btn-primary" href="#contact" data-scroll>Отримати консультацію</a>
+                                                <button class="nav-toggle" type="button" aria-label="Меню" aria-controls="primary-navigation" aria-expanded="false">
+                                                        <span></span>
+                                                        <span></span>
+                                                        <span></span>
+                                                </button>
                                         </div>
-                                        <div class="calc-section results-section">
-                                                <div class="section-header">
-                                                        <h3>📊 Результаты расчетов</h3>
-                                                </div>
-                                                <div class="section-content">
-                                                        <div class="info-block">
-                                                                Голубым цветом выделены трубопроводы со скоростями от 10 до 15 м/с – подходящие трубопроводы для газовых потоков; зелёным цветом выделены трубопроводы со скоростями от 0,8 до 1,5 м/с – подходящие трубопроводы для жидкостных потоков
+                                </div>
+                        </div>
+                        <div class="nav-backdrop" data-nav-backdrop></div>
+                </header>
+
+                <main>
+                        <section class="hero" id="home" data-section>
+                                <div class="container">
+                                        <div class="hero__inner">
+                                                <div class="hero__content">
+                                                        <span class="eyebrow">Український виробник з 2002 року</span>
+                                                        <h1>Комплексні рішення для приготування сумішей, бетонів та асфальту</h1>
+                                                        <p>Проєктуємо та будуємо змішувальні установки будь-якої складності: від модульних бетонозмішувальних станцій до мобільних асфальтобетонних заводів з цифровою диспетчеризацією.</p>
+                                                        <div class="hero__actions">
+                                                                <a class="btn btn-primary" href="#contact" data-scroll>Запросити комерційну пропозицію</a>
+                                                                <button class="btn btn-ghost" type="button" data-scroll-target="#about">Дізнатися більше</button>
                                                         </div>
-                                                        <div class="calc-results">
-                                                                <table class="velocity-table">
-                                                                        <thead><tr><th>Диаметр, мм</th><th>Скорость, м/с</th></tr></thead>
-                                                                        <tbody id="velocity-results-body"></tbody>
-                                                                </table>
+                                                        <dl class="hero-stats">
+                                                                <div class="hero-stats__item">
+                                                                        <dt><span data-counter data-counter-target="20">0</span>+</dt>
+                                                                        <dd>років на ринку</dd>
+                                                                </div>
+                                                                <div class="hero-stats__item">
+                                                                        <dt><span data-counter data-counter-target="120">0</span></dt>
+                                                                        <dd>запущених комплексів</dd>
+                                                                </div>
+                                                                <div class="hero-stats__item">
+                                                                        <dt><span data-counter data-counter-target="15">0</span></dt>
+                                                                        <dd>країн експорту</dd>
+                                                                </div>
+                                                        </dl>
+                                                </div>
+                                                <div class="hero__visual">
+                                                        <div class="hero-card">
+                                                                <p class="hero-card__title">Цифровий контроль виробництва</p>
+                                                                <p class="hero-card__text">Інтелектуальна система SteenMash SCADA збирає дані в реальному часі, забезпечує віддалений доступ і аналітику продуктивності.</p>
+                                                                <ul class="hero-card__list">
+                                                                        <li>Промислові контролери Siemens</li>
+                                                                        <li>Віддалений моніторинг 24/7</li>
+                                                                        <li>Інтеграція з ERP та CRM</li>
+                                                                </ul>
+                                                        </div>
+                                                        <div class="hero-badge">
+                                                                <span>ISO 9001:2018</span>
+                                                                <p>Сертифікована система менеджменту якості виробництва</p>
                                                         </div>
                                                 </div>
                                         </div>
                                 </div>
-                        </div>
-<div id="view-pipe-mass" class="calc-view">
-  <div class="calc-header">
-    <h1>Масса трубы</h1>
-  </div>
-  <div class="calc-content">
-    <div class="calc-section input-section">
-      <div class="section-header">
-        <h3>📝 Исходные данные</h3>
-      </div>
-      <div class="section-content">
-        <form id="form-pipe-mass">
-          <div class="form-group">
-            <label for="Do">Наружный диаметр, мм:</label>
-            <input type="number" name="Do" list="pipe-Do-options" step="0.1" required>
-            <datalist id="pipe-Do-options">
-              <option value="18"></option><option value="20"></option><option value="25"></option>
-              <option value="32"></option><option value="38"></option><option value="48"></option>
-              <option value="57"></option><option value="76"></option><option value="89"></option>
-              <option value="108"></option><option value="159"></option><option value="219"></option>
-              <option value="273"></option><option value="325"></option><option value="426"></option>
-              <option value="530"></option><option value="630"></option><option value="730"></option>
-              <option value="830"></option><option value="930"></option>
-            </datalist>
-          </div>
+                        </section>
 
-          <div class="form-group">
-            <label for="t">Толщина стенки, мм:</label>
-            <input type="number" name="t" list="pipe-t-options" step="0.1" required>
-            <datalist id="pipe-t-options">
-              <option value="2"></option><option value="2.5"></option><option value="3"></option>
-              <option value="3.8"></option><option value="4"></option><option value="4.5"></option>
-              <option value="5"></option><option value="6"></option><option value="8"></option>
-              <option value="9"></option><option value="10"></option>
-            </datalist>
-          </div>
-
-          <div class="form-group">
-            <label for="Di">Внутренний диаметр, мм:</label>
-            <input type="number" name="Di" readonly>
-          </div>
-
-          <div class="form-group">
-            <label for="length">Длина одной трубы, м:</label>
-            <input type="number" name="length" step="0.01" value="1" required>
-          </div>
-
-          <div class="form-group">
-            <label for="count">Количество труб, шт:</label>
-            <input type="number" name="count" step="1" value="1">
-          </div>
-
-          <div class="form-group">
-            <label for="material">Материал трубы:</label>
-            <select name="material" id="material-pipe"></select>
-          </div>
-
-          <div class="form-group">
-            <label for="density">Плотность, кг/м³:</label>
-            <input type="number" name="density" id="density-pipe" step="1" required>
-          </div>
-
-          <div class="form-actions">
-            <button type="button" id="btn-calc-pipe-mass" class="btn-calc">Выполнить расчет</button>
-            <button type="reset" class="btn-reset">Сбросить</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <div class="calc-section results-section">
-      <div class="section-header">
-        <h3>📊 Результаты расчетов</h3>
-      </div>
-      <div class="section-content">
-        <div class="calc-results">
-          <table class="results-table">
-            <tr><td>Общая длина труб, м:</td><td id="res-total-length">—</td></tr>
-            <tr><td>Масса 1 метра, кг:</td><td id="res-mass-per-meter">—</td></tr>
-            <tr><td>Масса всех труб, кг:</td><td id="res-total-mass">—</td></tr>
-          </table>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-
-                       <div id="view-liquid-height" class="calc-view">
-                               <div class="calc-header">
-                                       <h1>Расчет высоты слоя жидкости над распределительной тарелкой</h1>
-                               </div>
-                                <div class="calc-content">
-                                        <!-- Секция 1: Ввод исходных данных -->
-                                        <div class="calc-section input-section">
-                                                <div class="section-header">
-                                                        <h3>📝 Исходные данные</h3>
+                        <section class="section about" id="about" data-section>
+                                <div class="container">
+                                        <div class="section-heading">
+                                                <span class="eyebrow">Про SteenMash</span>
+                                                <h2>Повний цикл — від ідеї до сервісу</h2>
+                                                <p>Ми поєднуємо інженерну експертизу, власне виробництво металоконструкцій та сервісну службу для безперервної роботи обладнання клієнтів.</p>
+                                        </div>
+                                        <div class="about__grid">
+                                                <article class="about__card">
+                                                        <h3>Індивідуальне проєктування</h3>
+                                                        <p>Команда конструкторів адаптує обладнання під технологічні особливості кожного підприємства, використовуючи 3D-моделювання та розрахунки.</p>
+                                                        <ul class="checklist">
+                                                                <li>Технологічні схеми та паспорти</li>
+                                                                <li>Підбір силосів, дозаторів, транспортерів</li>
+                                                                <li>Енергоефективні рішення</li>
+                                                        </ul>
+                                                </article>
+                                                <article class="about__card">
+                                                        <h3>Власне виробництво</h3>
+                                                        <p>Завод у Київській області оснащено лініями плазмового різання, автоматичного зварювання та фарбування. Контроль якості на кожному етапі.</p>
+                                                        <ul class="checklist">
+                                                                <li>Повний цикл металообробки</li>
+                                                                <li>Контроль геометрії 3D-сканерами</li>
+                                                                <li>Монтаж та шефмонтаж на майданчику</li>
+                                                        </ul>
+                                                </article>
+                                                <article class="about__card">
+                                                        <h3>Сервіс і модернізація</h3>
+                                                        <p>Постачаємо оригінальні запчастини, модернізуємо існуючі лінії, забезпечуємо навчання персоналу і супровід 24/7.</p>
+                                                        <ul class="checklist">
+                                                                <li>Склади запчастин в Україні та ЄС</li>
+                                                                <li>Підтримка протягом усього життєвого циклу</li>
+                                                                <li>Сервісні контракти та аудит</li>
+                                                        </ul>
+                                                </article>
+                                        </div>
+                                        <div class="about__facts">
+                                                <div class="fact">
+                                                        <span class="fact__number" data-counter data-counter-target="460">0</span>
+                                                        <span class="fact__label">тонн металу опрацьовуємо щомісяця</span>
                                                 </div>
-                                                <div class="section-content">
-                                                       <form id="form-liquid-height">
-                                                               <div class="form-group">
-                                                                       <label for="flow">Объемный расход, м³/час:</label>
-                                                                       <input type="number" name="flow" step="0.001" required>
-                                                               </div>
-
-                                                               <div class="form-group">
-                                                                       <label for="diameter">Диаметр отверстия, мм:</label>
-                                                                       <input type="number" name="diameter" step="0.01" required>
-                                                               </div>
-
-                                                               <div class="form-group">
-                                                                       <label for="holes">Количество отверстий, шт.:</label>
-                                                                       <input type="number" name="holes" step="1" required>
-                                                               </div>
-
-                                                               <div class="info-box">
-                                                                       Для отверстий диаметром более 2 мм вязкость практически не влияет на расчет, поэтому в исходные данные она не вводится.
-                                                               </div>
-
-                                                               <div class="form-actions">
-                                                                       <button type="button" id="btn-calc-liquid-height" class="btn-calc">Выполнить расчет</button>
-                                                                       <button type="reset" class="btn-reset">Сбросить</button>
-                                                               </div>
-                                                       </form>
-                                               </div>
-                                       </div>
-
-                                        <!-- Секция 2: Результаты расчетов -->
-                                       <div class="calc-section results-section">
-                                               <div class="section-header">
-                                                       <h3>📊 Результаты расчетов</h3>
-                                               </div>
-                                               <div class="section-content">
-                                                      <div class="calc-results">
-                                                              <table class="results-table">
-                                                                      <tr><td>Линейная скорость в отверстиях, м/с:</td><td id="res-velocity">—</td></tr>
-                                                                      <tr><td>Высота жидкости над тарелкой, мм:</td><td id="res-height-mm">—</td></tr>
-                                                              </table>
-                                                              <div id="res-hole-counts"></div>
-                                                      </div>
-                                              </div>
-                                      </div>
-
-
-                                       <!-- Секция 3: Предварительный просмотр PDF -->
-                                        <div class="calc-section pdf-preview-section">
-                                                <div class="section-header">
-                                                        <h3>📄 Предварительный просмотр отчета</h3>
-                                                        <button id="btn-export-pdf-liquid-height" class="btn-export">Экспорт в PDF</button>
+                                                <div class="fact">
+                                                        <span class="fact__number" data-counter data-counter-target="98" data-counter-suffix="%">0</span>
+                                                        <span class="fact__label">готовності обладнання на об'єктах клієнтів</span>
                                                 </div>
-                                                <div class="section-content">
-                                                        <div id="report-content-liquid-height" class="report-body"></div>
-                                                        <div id="print-source-liquid-height" class="report-print" style="position:absolute; left:-9999px; top:-9999px; width:800px; visibility:hidden;"></div>
+                                                <div class="fact">
+                                                        <span class="fact__number" data-counter data-counter-target="45">0</span>
+                                                        <span class="fact__label">інженерів і сервісних спеціалістів</span>
+                                                </div>
+                                                <div class="fact">
+                                                        <span class="fact__number" data-counter data-counter-target="12">0</span>
+                                                        <span class="fact__label">місяців гарантії на кожен комплекс</span>
                                                 </div>
                                         </div>
                                 </div>
-                        </div>
+                        </section>
 
-                        <div id="view-pipe-resistance" class="calc-view">
-                                <div class="calc-header">
-                                        <h1>Расчет гидравлического сопротивления в трубе</h1>
+                        <section class="section solutions" id="solutions" data-section>
+                                <div class="container">
+                                        <div class="section-heading">
+                                                <span class="eyebrow">Галузеві рішення</span>
+                                                <h2>Комплекси для різних типів виробництв</h2>
+                                        </div>
+                                        <div class="solutions__grid">
+                                                <article class="solution-card">
+                                                        <h3>Бетонні заводи</h3>
+                                                        <p>Стаціонарні та мобільні установки продуктивністю від 30 до 180 м³/год з модульною архітектурою.</p>
+                                                        <ul>
+                                                                <li>Планетарні та двовальні міксери</li>
+                                                                <li>Автоматичне дозування компонентів</li>
+                                                                <li>Система контролю вологи агрегатів</li>
+                                                        </ul>
+                                                </article>
+                                                <article class="solution-card">
+                                                        <h3>Асфальтобетонні заводи</h3>
+                                                        <p>Комплекси для дорожнього будівництва з рециркуляцією RAP та фільтрацією викидів.</p>
+                                                        <ul>
+                                                                <li>Барабанні та каскадні сушарки</li>
+                                                                <li>Грануляція та підігрів бітуму</li>
+                                                                <li>Ваговий контроль сумішей</li>
+                                                        </ul>
+                                                </article>
+                                                <article class="solution-card">
+                                                        <h3>Сухі будівельні суміші</h3>
+                                                        <p>Лінії фасування та пакування сухих сумішей з різними типами дозаторів і міксерів.</p>
+                                                        <ul>
+                                                                <li>Пневмотранспортери та шнеки</li>
+                                                                <li>Автоматизація пакування та палетування</li>
+                                                                <li>Контроль якості у реальному часі</li>
+                                                        </ul>
+                                                </article>
+                                                <article class="solution-card">
+                                                        <h3>Агропромисловість</h3>
+                                                        <p>Рішення для комбікормових заводів, преміксів та мінеральних добавок з високою точністю дозування.</p>
+                                                        <ul>
+                                                                <li>Силоси з системою аерації</li>
+                                                                <li>Модульні вузли змішування</li>
+                                                                <li>Вагові та об'ємні дозатори</li>
+                                                        </ul>
+                                                </article>
+                                        </div>
                                 </div>
-                                <div class="calc-content">
-                                        <div class="calc-section input-section">
-                                                <div class="section-header">
-                                                        <h3>📝 Исходные данные</h3>
+                        </section>
+
+                        <section class="section catalog" id="catalog" data-section>
+                                <div class="container">
+                                        <div class="section-heading">
+                                                <span class="eyebrow">Каталог продукції</span>
+                                                <h2>Стандартні комплектації та модульні рішення</h2>
+                                                <p>Оберіть категорію обладнання, щоб ознайомитися з технічними характеристиками та доступними опціями.</p>
+                                        </div>
+                                        <div class="catalog__filters" role="tablist" aria-label="Категорії продукції">
+                                                <button class="chip is-active" type="button" role="tab" aria-selected="true" data-filter="all">Усе обладнання</button>
+                                                <button class="chip" type="button" role="tab" aria-selected="false" data-filter="concrete">Бетон</button>
+                                                <button class="chip" type="button" role="tab" aria-selected="false" data-filter="asphalt">Асфальт</button>
+                                                <button class="chip" type="button" role="tab" aria-selected="false" data-filter="drymix">Сухі суміші</button>
+                                                <button class="chip" type="button" role="tab" aria-selected="false" data-filter="auxiliary">Додаткове</button>
+                                        </div>
+                                        <div class="catalog__grid" data-catalog-grid>
+                                                <article class="product-card" data-category="concrete">
+                                                        <h3>SM Concrete Pro 120</h3>
+                                                        <p>Двовальний бетонозмішувач з продуктивністю 120 м³/год, 4 бункери агрегатів та автоматизоване дозування добавок.</p>
+                                                        <ul>
+                                                                <li>Дозатори цементу з контролем ваги ±0,5%</li>
+                                                                <li>Вбудована система підігріву та утеплення</li>
+                                                                <li>Хмарний моніторинг виробництва</li>
+                                                        </ul>
+                                                        <div class="product-card__footer">
+                                                                <span>Виробничість: 120 м³/год</span>
+                                                                <button class="link" type="button" data-scroll-target="#contact">Отримати пропозицію</button>
+                                                        </div>
+                                                </article>
+                                                <article class="product-card" data-category="concrete">
+                                                        <h3>SM Compact 45</h3>
+                                                        <p>Мобільний бетонний завод у контейнерному виконанні з швидким монтажем та енергоефективними приводами.</p>
+                                                        <ul>
+                                                                <li>Збірка без фундаменту</li>
+                                                                <li>До 4 рецептур у пам'яті системи</li>
+                                                                <li>Резервне живлення та UPS</li>
+                                                        </ul>
+                                                        <div class="product-card__footer">
+                                                                <span>Виробничість: 45 м³/год</span>
+                                                                <button class="link" type="button" data-scroll-target="#contact">Замовити консультацію</button>
+                                                        </div>
+                                                </article>
+                                                <article class="product-card" data-category="asphalt">
+                                                        <h3>SM Asphalt Master 160</h3>
+                                                        <p>Повністю автоматизований асфальтобетонний завод з рециркуляцією до 50% відпрацьованого матеріалу.</p>
+                                                        <ul>
+                                                                <li>Фільтрація викидів до 20 мг/м³</li>
+                                                                <li>Бітумне господарство з підігрівом</li>
+                                                                <li>Система контролю температури суміші</li>
+                                                        </ul>
+                                                        <div class="product-card__footer">
+                                                                <span>Продуктивність: 160 т/год</span>
+                                                                <button class="link" type="button" data-scroll-target="#contact">Підібрати конфігурацію</button>
+                                                        </div>
+                                                </article>
+                                                <article class="product-card" data-category="drymix">
+                                                        <h3>SM DryMix 60</h3>
+                                                        <p>Лінія для виробництва сухих будівельних сумішей із системою фасування в клапанні мішки та біг-беги.</p>
+                                                        <ul>
+                                                                <li>Міксер 1,5 м³ з нержавіючим покриттям</li>
+                                                                <li>Автоматичне пакування та етикетування</li>
+                                                                <li>Система аспірації та очищення повітря</li>
+                                                        </ul>
+                                                        <div class="product-card__footer">
+                                                                <span>Продуктивність: 60 т/год</span>
+                                                                <button class="link" type="button" data-scroll-target="#contact">Запросити комерційну</button>
+                                                        </div>
+                                                </article>
+                                                <article class="product-card" data-category="auxiliary">
+                                                        <h3>SteenMash SCADA</h3>
+                                                        <p>Програмно-апаратний комплекс для диспетчеризації виробництва з аналітикою, інтеграцією з ERP та мобільним додатком.</p>
+                                                        <ul>
+                                                                <li>Гнучкі дашборди KPI</li>
+                                                                <li>Попереджувальна діагностика обладнання</li>
+                                                                <li>Віддалений доступ з планшетів і смартфонів</li>
+                                                        </ul>
+                                                        <div class="product-card__footer">
+                                                                <span>Тип: цифрова екосистема</span>
+                                                                <button class="link" type="button" data-scroll-target="#contact">Замовити демо</button>
+                                                        </div>
+                                                </article>
+                                                <article class="product-card" data-category="auxiliary">
+                                                        <h3>Силосні парки</h3>
+                                                        <p>Силоси цементу та заповнювачів місткістю від 30 до 500 т з системами аерації та контролем рівня.</p>
+                                                        <ul>
+                                                                <li>Модульні комплектації під проєкт</li>
+                                                                <li>Моніторинг рівня та температури</li>
+                                                                <li>Антикорозійне покриття</li>
+                                                        </ul>
+                                                        <div class="product-card__footer">
+                                                                <span>Опції: датчики, зважування, КІП</span>
+                                                                <button class="link" type="button" data-scroll-target="#contact">Отримати кошторис</button>
+                                                        </div>
+                                                </article>
+                                        </div>
+                                        <div class="catalog__cta">
+                                                <div>
+                                                        <h3>Потрібне індивідуальне рішення?</h3>
+                                                        <p>Наші інженери розроблять комплекс під ваші технологічні вимоги, враховуючи сировину, клімат та логістику.</p>
                                                 </div>
-                                                <div class="section-content">
-                                                        <form id="form-pipe-resistance">
-                                                                <div class="form-group">
-                                                                        <label for="fluid">Жидкость:</label>
-                                                                        <select name="fluid" id="fluid">
-                                                                                <option value="water">Вода</option>
-                                                                                <option value="diesel">Дизельное топливо</option>
-                                                                                <option value="gasoline">Бензин</option>
-                                                                        </select>
+                                                <a class="btn btn-primary" href="#contact" data-scroll>Надіслати технічне завдання</a>
+                                        </div>
+                                </div>
+                        </section>
+
+                        <section class="section process" data-section>
+                                <div class="container">
+                                        <div class="section-heading">
+                                                <span class="eyebrow">Як ми працюємо</span>
+                                                <h2>Прозорий процес співпраці</h2>
+                                        </div>
+                                        <ol class="timeline">
+                                                <li class="timeline__item">
+                                                        <div class="timeline__number">1</div>
+                                                        <div class="timeline__content">
+                                                                <h3>Аналітика та технічне завдання</h3>
+                                                                <p>Виїзд на об'єкт, збір вихідних даних, моделювання продуктивності та енерговитрат.</p>
+                                                        </div>
+                                                </li>
+                                                <li class="timeline__item">
+                                                        <div class="timeline__number">2</div>
+                                                        <div class="timeline__content">
+                                                                <h3>Проєктування та узгодження</h3>
+                                                                <p>Розробка 3D-моделей, кошторисів, графіків реалізації. Візуалізація розміщення на майданчику.</p>
+                                                        </div>
+                                                </li>
+                                                <li class="timeline__item">
+                                                        <div class="timeline__number">3</div>
+                                                        <div class="timeline__content">
+                                                                <h3>Виробництво і тестування</h3>
+                                                                <p>Виготовлення вузлів, контроль якості, заводські випробування з реальними рецептурами.</p>
+                                                        </div>
+                                                </li>
+                                                <li class="timeline__item">
+                                                        <div class="timeline__number">4</div>
+                                                        <div class="timeline__content">
+                                                                <h3>Монтаж і запуск</h3>
+                                                                <p>Доставка, монтаж, навчання персоналу та запуск комплексу під ключ.</p>
+                                                        </div>
+                                                </li>
+                                                <li class="timeline__item">
+                                                        <div class="timeline__number">5</div>
+                                                        <div class="timeline__content">
+                                                                <h3>Супровід та сервіс</h3>
+                                                                <p>Цілодобова техпідтримка, склади запчастин, сервісні контракти та модернізація.</p>
+                                                        </div>
+                                                </li>
+                                        </ol>
+                                </div>
+                        </section>
+
+                        <section class="section projects" id="projects" data-section>
+                                <div class="container">
+                                        <div class="section-heading">
+                                                <span class="eyebrow">Реалізовані об'єкти</span>
+                                                <h2>Проєкти SteenMash у Європі</h2>
+                                        </div>
+                                        <div class="slider" data-slider="projects">
+                                                <div class="slider__viewport" data-track>
+                                                        <article class="project-slide" data-slide>
+                                                                <div class="project-slide__content">
+                                                                        <h3>Бетонний завод для логістичного парку</h3>
+                                                                        <p>Комплекс SM Concrete Pro 90, м. Львів, Україна. Забезпечує безперебійну поставку бетону для будівництва індустріального парку площею 120 тис. м².</p>
+                                                                        <ul>
+                                                                                <li>Повністю замкнений цикл подачі агрегатів</li>
+                                                                                <li>Автоматичні рецепти та інтеграція з 1С</li>
+                                                                                <li>Система рекуперації тепла</li>
+                                                                        </ul>
                                                                 </div>
-
-                                                                <div class="form-group">
-                                                                        <label for="temperature">Температура, °C: <span id="temp-display">0</span></label>
-                                                                        <input type="range" name="temperature" id="temperature" step="0.1">
+                                                                <div class="project-slide__meta">
+                                                                        <span>2024 рік</span>
+                                                                        <span>Продуктивність 90 м³/год</span>
                                                                 </div>
-
-                                                                <div class="form-group">
-                                                                        <label for="length">Длина трубы, м:</label>
-                                                                        <input type="number" name="length" step="0.01" required>
+                                                        </article>
+                                                        <article class="project-slide" data-slide>
+                                                                <div class="project-slide__content">
+                                                                        <h3>Асфальтобетонний завод у Польщі</h3>
+                                                                        <p>Комплекс SM Asphalt Master 160 для реконструкції автострад. Впроваджено систему повторного використання RAP та автоматичний контроль температури.</p>
+                                                                        <ul>
+                                                                                <li>Дистанційний моніторинг через SteenMash Cloud</li>
+                                                                                <li>Енергоощадні пальники Weishaupt</li>
+                                                                                <li>Викиди пилу &lt; 15 мг/м³</li>
+                                                                        </ul>
                                                                 </div>
-
-                                                               <div class="form-group">
-                                                                        <label for="diameter">Внутренний диаметр, мм:</label>
-                                                                        <input type="number" name="diameter" step="0.1" required>
-                                                               </div>
-
-                                                               <div class="form-group">
-                                                                        <label for="roughness">Шероховатость:</label>
-                                                                        <select name="roughness" id="roughness">
-                                                                                <option value="smooth">Гладкая</option>
-                                                                                <option value="slight">Слегка шероховатая</option>
-                                                                                <option value="corroded">Скорродированная</option>
-                                                                        </select>
-                                                               </div>
-
-                                                               <div class="form-group">
-                                                                        <label for="flow">Объемный расход, м³/час:</label>
-                                                                        <input type="number" name="flow" step="0.001" required>
-                                                               </div>
-
-                                                                <div class="form-actions">
-                                                                        <button type="button" id="btn-calc-pipe" class="btn-calc">Выполнить расчет</button>
-                                                                        <button type="reset" class="btn-reset">Сбросить</button>
+                                                                <div class="project-slide__meta">
+                                                                        <span>2023 рік</span>
+                                                                        <span>Продуктивність 160 т/год</span>
                                                                 </div>
-                                                        </form>
+                                                        </article>
+                                                        <article class="project-slide" data-slide>
+                                                                <div class="project-slide__content">
+                                                                        <h3>Лінія сухих будівельних сумішей</h3>
+                                                                        <p>SM DryMix 40 для виробника преміальних клейових сумішей. Інтегрована лабораторія, система відбору проб та віддалений доступ.</p>
+                                                                        <ul>
+                                                                                <li>Автоматичне фасування у клапанні мішки</li>
+                                                                                <li>Контроль вологості та гранулометрії</li>
+                                                                                <li>Палетування роботизованим маніпулятором</li>
+                                                                        </ul>
+                                                                </div>
+                                                                <div class="project-slide__meta">
+                                                                        <span>2022 рік</span>
+                                                                        <span>Продуктивність 40 т/год</span>
+                                                                </div>
+                                                        </article>
+                                                </div>
+                                                <div class="slider__controls">
+                                                        <button class="slider__btn" type="button" data-prev aria-label="Попередній проєкт"></button>
+                                                        <div class="slider__status"><span data-current>1</span>/<span data-total>3</span></div>
+                                                        <button class="slider__btn" type="button" data-next aria-label="Наступний проєкт"></button>
                                                 </div>
                                         </div>
+                                </div>
+                        </section>
 
-                                        <div class="calc-section results-section">
-                                                <div class="section-header">
-                                                        <h3>📊 Результаты расчетов</h3>
+                        <section class="section testimonials" data-section>
+                                <div class="container">
+                                        <div class="section-heading">
+                                                <span class="eyebrow">Відгуки клієнтів</span>
+                                                <h2>Підтверджена ефективність рішень</h2>
+                                        </div>
+                                        <div class="slider slider--secondary" data-slider="testimonials">
+                                                <div class="slider__viewport" data-track>
+                                                        <article class="testimonial" data-slide>
+                                                                <p>«SteenMash спроєктували і запустили бетонний завод менш ніж за шість місяців. Завдяки автоматизації ми зменшили відходи цементу на 12%.»</p>
+                                                                <div class="testimonial__author">
+                                                                        <span>Ігор Коваленко</span>
+                                                                        <small>CEO, BudInvest Development</small>
+                                                                </div>
+                                                        </article>
+                                                        <article class="testimonial" data-slide>
+                                                                <p>«Після модернізації нашого асфальтобетонного заводу продуктивність зросла на 25%, а витрати палива знизилися. Сервісна команда завжди на зв'язку.»</p>
+                                                                <div class="testimonial__author">
+                                                                        <span>Анна Малевська</span>
+                                                                        <small>Операційна директорка, RoadBuild Polska</small>
+                                                                </div>
+                                                        </article>
+                                                        <article class="testimonial" data-slide>
+                                                                <p>«Спільно з SteenMash ми впровадили рішення для сухих сумішей. Система контролю якості дозволяє миттєво відслідковувати параметри партій.»</p>
+                                                                <div class="testimonial__author">
+                                                                        <span>Михайло Романюк</span>
+                                                                        <small>Директор виробництва, MixLine</small>
+                                                                </div>
+                                                        </article>
                                                 </div>
-                                                <div class="section-content">
-                                                        <div class="calc-results">
-                                                                <table class="results-table">
-                                                                        <tr><td>Плотность ρ, кг/м³:</td><td id="res-density">—</td></tr>
-                                                                       <tr><td>Вязкость μ, Па·с:</td><td id="res-viscosity">—</td></tr>
-                                                                       <tr><td>Скорость v, м/с:</td><td id="res-velocity-pipe">—</td></tr>
-                                                                       <tr><td>Число Рейнольдса Re:</td><td id="res-Re">—</td></tr>
-                                                                       <tr><td>Коэффициент трения λ:</td><td id="res-lambda">—</td></tr>
-                                                                       <tr><td>Относительная шероховатость ε/D:</td><td id="res-relative-roughness">—</td></tr>
-                                                                       <tr><td>Потери давления ΔP, Па:</td><td id="res-deltaP">—</td></tr>
-                                                                </table>
+                                                <div class="slider__controls">
+                                                        <button class="slider__btn" type="button" data-prev aria-label="Попередній відгук"></button>
+                                                        <div class="slider__status"><span data-current>1</span>/<span data-total>3</span></div>
+                                                        <button class="slider__btn" type="button" data-next aria-label="Наступний відгук"></button>
+                                                </div>
+                                        </div>
+                                </div>
+                        </section>
+
+                        <section class="section faq" data-section>
+                                <div class="container">
+                                        <div class="section-heading">
+                                                <span class="eyebrow">Часті питання</span>
+                                                <h2>Знаходимо відповіді ще на етапі планування</h2>
+                                        </div>
+                                        <div class="faq__grid">
+                                                <div class="faq__item">
+                                                        <button type="button" aria-expanded="false">
+                                                                <span>Які строки виробництва та монтажу комплексу?</span>
+                                                        </button>
+                                                        <div class="faq__answer">
+                                                                <p>Стандартний цикл виготовлення займає від 10 до 18 тижнів. Монтаж та запуск — ще 3–5 тижнів залежно від складності та умов майданчика.</p>
+                                                        </div>
+                                                </div>
+                                                <div class="faq__item">
+                                                        <button type="button" aria-expanded="false">
+                                                                <span>Чи можна модернізувати існуючий завод?</span>
+                                                        </button>
+                                                        <div class="faq__answer">
+                                                                <p>Так, ми проводимо аудит обладнання, підбираємо нові вузли, впроваджуємо системи автоматизації та навчаємо персонал роботі з оновленим комплексом.</p>
+                                                        </div>
+                                                </div>
+                                                <div class="faq__item">
+                                                        <button type="button" aria-expanded="false">
+                                                                <span>Які варіанти фінансування ви пропонуєте?</span>
+                                                        </button>
+                                                        <div class="faq__answer">
+                                                                <p>Допомагаємо з оформленням лізингових програм, кредитного фінансування та поетапних платежів. Працюємо з українськими та європейськими банками.</p>
+                                                        </div>
+                                                </div>
+                                                <div class="faq__item">
+                                                        <button type="button" aria-expanded="false">
+                                                                <span>Як організовано сервісне обслуговування?</span>
+                                                        </button>
+                                                        <div class="faq__answer">
+                                                                <p>Сервісні інженери доступні 24/7. Склади запчастин розташовані у Києві та Вроцлаві, що дозволяє постачати критичні вузли протягом 48 годин.</p>
                                                         </div>
                                                 </div>
                                         </div>
+                                </div>
+                        </section>
 
-                                        <div class="calc-section pdf-preview-section">
-                                                <div class="section-header">
-                                                        <h3>📄 Предварительный просмотр отчета</h3>
-                                                        <button id="btn-export-pdf-pipe-resistance" class="btn-export">Экспорт в PDF</button>
-                                                </div>
-                                                <div class="section-content">
-                                                        <div id="report-content-pipe-resistance" class="report-body"></div>
-                                                        <div id="print-source-pipe-resistance" class="report-print" style="position:absolute; left:-9999px; top:-9999px; width:800px; visibility:hidden;"></div>
-                                                </div>
+                        <section class="section partners" data-section>
+                                <div class="container">
+                                        <div class="section-heading">
+                                                <span class="eyebrow">Нам довіряють</span>
+                                                <h2>Партнери та постачальники</h2>
+                                        </div>
+                                        <div class="partners__list">
+                                                <span>Siemens</span>
+                                                <span>SKF</span>
+                                                <span>HBM</span>
+                                                <span>Weishaupt</span>
+                                                <span>Sika</span>
+                                                <span>ABB</span>
                                         </div>
                                 </div>
-                        </div>
+                        </section>
 
-                        <div id="view-gas-calorific" class="calc-view">
-                                <div class="calc-header">
-                                        <h1>Расчет калорийности газа</h1>
-                                </div>
-                                <div class="calc-content">
-                                        <div class="calc-section input-section">
-                                                <div class="section-header">
-                                                        <h3>📝 Исходные данные</h3>
-                                                </div>
-                                                <div class="section-content">
-                                                        <form id="form-gas-calorific">
-                                                                <div class="form-group">
-                                                                        <label for="basis">Единица состава:</label>
-                                                                        <select name="basis">
-                                                                                <option value="molar">мольные %</option>
-                                                                                <option value="mass">массовые %</option>
-                                                                        </select>
-                                                                </div>
-                                                                <div class="form-group"><label for="ch4">Метан, %:</label><input type="number" name="ch4" step="0.01"></div>
-                                                                <div class="form-group"><label for="c2h6">Этан, %:</label><input type="number" name="c2h6" step="0.01"></div>
-                                                                <div class="form-group"><label for="c3h8">Пропан, %:</label><input type="number" name="c3h8" step="0.01"></div>
-                                                                <div class="form-group"><label for="c4h10">Бутаны, %:</label><input type="number" name="c4h10" step="0.01"></div>
-                                                                <div class="form-group"><label for="c5h12">Пентаны, %:</label><input type="number" name="c5h12" step="0.01"></div>
-                                                                <div class="form-group"><label for="c6plus">Гексаны+высшие, %:</label><input type="number" name="c6plus" step="0.01"></div>
-                                                                <div class="form-group"><label for="n2">Азот, %:</label><input type="number" name="n2" step="0.01"></div>
-                                                                <div class="form-group"><label for="co2">CO₂, %:</label><input type="number" name="co2" step="0.01"></div>
-                                                                <div class="form-group"><label for="h2o">Вода, %:</label><input type="number" name="h2o" step="0.01"></div>
-                                                                <div class="form-group"><label>Сумма концентраций, %:</label><span id="gas-total">0</span></div>
-
-                                                                <div class="form-actions">
-                                                                        <button type="button" id="btn-calc-gas" class="btn-calc">Выполнить расчет</button>
-                                                                        <button type="reset" class="btn-reset">Сбросить</button>
-                                                                </div>
-                                                        </form>
-                                                </div>
+                        <section class="section news" id="news" data-section>
+                                <div class="container">
+                                        <div class="section-heading">
+                                                <span class="eyebrow">Останні новини</span>
+                                                <h2>Події SteenMash та галузеві огляди</h2>
                                         </div>
-                                        <div class="calc-section results-section">
-                                                <div class="section-header">
-                                                        <h3>📊 Результаты расчетов</h3>
+                                        <div class="news__grid">
+                                                <article class="news-card">
+                                                        <span class="news-card__date">15 травня 2024</span>
+                                                        <h3>Запущено нову лінію сухих сумішей у Чехії</h3>
+                                                        <p>Виробничий комплекс отримав автоматичну систему контролю рецептур і роботизоване палетування. Виробничість — 80 т/год.</p>
+                                                        <a class="link" href="#contact" data-scroll>Дізнатися більше</a>
+                                                </article>
+                                                <article class="news-card">
+                                                        <span class="news-card__date">02 квітня 2024</span>
+                                                        <h3>SteenMash представив оновлену SCADA-платформу</h3>
+                                                        <p>Нова версія включає мобільний додаток, модуль енергоменеджменту та API для інтеграції з обліковими системами.</p>
+                                                        <a class="link" href="#contact" data-scroll>Запросити презентацію</a>
+                                                </article>
+                                                <article class="news-card">
+                                                        <span class="news-card__date">18 березня 2024</span>
+                                                        <h3>Участь у виставці InterBuildExpo</h3>
+                                                        <p>Представили модульний бетонний завод SM Compact 60 та провели понад 120 зустрічей з представниками девелоперів.</p>
+                                                        <a class="link" href="#contact" data-scroll>Запланувати зустріч</a>
+                                                </article>
+                                        </div>
+                                </div>
+                        </section>
+
+                        <section class="section cta" data-section>
+                                <div class="container">
+                                        <div class="cta__inner">
+                                                <div>
+                                                        <span class="eyebrow">Потрібна порада?</span>
+                                                        <h2>Залиште контакти — підготуємо технічне рішення</h2>
+                                                        <p>Спрямуємо інженера-консультанта, проведемо аудит і запропонуємо оптимальну конфігурацію комплексу.</p>
                                                 </div>
-                                                <div class="section-content">
-                                                        <div class="calc-results">
-                                                                <table class="results-table">
-                                                                        <tr><td>Калорийность, ккал/м³:</td><td id="res-gas-kcal-m3">—</td></tr>
-                                                                        <tr><td>Калорийность, МДж/м³:</td><td id="res-gas-mj-m3">—</td></tr>
-                                                                        <tr><td>Калорийность, кВт·ч/м³:</td><td id="res-gas-kwh-m3">—</td></tr>
-                                                                        <tr><td>Плотность, кг/м³:</td><td id="res-gas-density">—</td></tr>
-                                                                        <tr><td>Калорийность, МДж/кг:</td><td id="res-gas-mj-kg">—</td></tr>
-                                                                        <tr><td>Калорийность, ккал/кг:</td><td id="res-gas-kcal-kg">—</td></tr>
-                                                                        <tr><td>Калорийность, кВт·ч/кг:</td><td id="res-gas-kwh-kg">—</td></tr>
-                                                                </table>
+                                                <a class="btn btn-primary" href="#contact" data-scroll>Зв'язатися</a>
+                                        </div>
+                                </div>
+                        </section>
+
+                        <section class="section contact" id="contact" data-section>
+                                <div class="container">
+                                        <div class="section-heading">
+                                                <span class="eyebrow">Контакти</span>
+                                                <h2>Напишіть нам</h2>
+                                                <p>Залиште свій запит — і ми підготуємо індивідуальну пропозицію протягом 48 годин.</p>
+                                        </div>
+                                        <div class="contact__grid">
+                                                <div class="contact__info">
+                                                        <div class="contact-block">
+                                                                <h3>Офіс в Україні</h3>
+                                                                <p>м. Київ, вул. Промислова, 12</p>
+                                                                <a class="contact-link" href="tel:+380441111111">+38 (044) 111-11-11</a>
+                                                                <a class="contact-link" href="mailto:sales@steenmash.com.ua">sales@steenmash.com.ua</a>
+                                                        </div>
+                                                        <div class="contact-block">
+                                                                <h3>Сервісна лінія</h3>
+                                                                <a class="contact-link" href="tel:+380671234567">+38 (067) 123-45-67</a>
+                                                                <p>Цілодобова підтримка клієнтів та склади запчастин.</p>
+                                                        </div>
+                                                        <div class="contact-block">
+                                                                <h3>Соціальні мережі</h3>
+                                                                <div class="social-links">
+                                                                        <a href="#" aria-label="Facebook">Facebook</a>
+                                                                        <a href="#" aria-label="LinkedIn">LinkedIn</a>
+                                                                        <a href="#" aria-label="YouTube">YouTube</a>
+                                                                </div>
                                                         </div>
                                                 </div>
-                                        </div>
-                                        <div class="calc-section pdf-preview-section">
-                                                <div class="section-header">
-                                                        <h3>📄 Предварительный просмотр отчета</h3>
-                                                        <button id="btn-export-pdf-gas-calorific" class="btn-export">Экспорт в PDF</button>
-                                                </div>
-                                                <div class="section-content">
-                                                        <div id="report-content-gas-calorific" class="report-body"></div>
-                                                        <div id="print-source-gas-calorific" class="report-print" style="position:absolute; left:-9999px; top:-9999px; width:800px; visibility:hidden;"></div>
-                                                </div>
+                                                <form class="contact__form" id="contact-form">
+                                                        <div class="form-field">
+                                                                <label for="name">Ваше ім'я</label>
+                                                                <input id="name" name="name" type="text" required placeholder="Олександр Іваненко">
+                                                        </div>
+                                                        <div class="form-field">
+                                                                <label for="company">Компанія</label>
+                                                                <input id="company" name="company" type="text" placeholder="ТОВ «БудІнвест»">
+                                                        </div>
+                                                        <div class="form-field">
+                                                                <label for="email">Email</label>
+                                                                <input id="email" name="email" type="email" required placeholder="name@company.com">
+                                                        </div>
+                                                        <div class="form-field">
+                                                                <label for="phone">Телефон</label>
+                                                                <input id="phone" name="phone" type="tel" placeholder="+38 (0XX) XXX-XX-XX">
+                                                        </div>
+                                                        <div class="form-field form-field--wide">
+                                                                <label for="message">Опишіть задачу</label>
+                                                                <textarea id="message" name="message" rows="4" required placeholder="Тип суміші, продуктивність, особливі вимоги"></textarea>
+                                                        </div>
+                                                        <div class="form-footer">
+                                                                <p>Натискаючи кнопку, ви погоджуєтесь з політикою конфіденційності.</p>
+                                                                <button class="btn btn-primary" type="submit">Надіслати</button>
+                                                        </div>
+                                                        <div class="form-message" role="status" aria-live="polite"></div>
+                                                </form>
                                         </div>
                                 </div>
-                        </div>
+                        </section>
                 </main>
+
+                <footer class="site-footer">
+                        <div class="container">
+                                <div class="footer__top">
+                                        <div>
+                                                <a class="logo" href="#home" data-scroll>
+                                                        <span class="logo__mark">Steen</span><span class="logo__mark logo__mark--accent">Mash</span>
+                                                </a>
+                                                <p>Український виробник змішувальних комплексів та інженерних рішень для будівельної галузі.</p>
+                                        </div>
+                                        <nav class="footer__nav" aria-label="Навігація футера">
+                                                <a href="#about" data-scroll>Про компанію</a>
+                                                <a href="#catalog" data-scroll>Каталог</a>
+                                                <a href="#projects" data-scroll>Проєкти</a>
+                                                <a href="#news" data-scroll>Новини</a>
+                                        </nav>
+                                        <div class="footer__cta">
+                                                <span>Отримуйте новини та корисні матеріали</span>
+                                                <form class="footer__form">
+                                                        <label class="sr-only" for="footer-email">Email</label>
+                                                        <input id="footer-email" type="email" placeholder="email@company.com" required>
+                                                        <button type="submit" class="btn btn-primary">Підписатися</button>
+                                                </form>
+                                        </div>
+                                </div>
+                                <div class="footer__bottom">
+                                        <span>© 2024 SteenMash. Усі права захищені.</span>
+                                        <a class="link" href="#contact" data-scroll>Політика конфіденційності</a>
+                                </div>
+                        </div>
+                </footer>
         </div>
-	
-	<script src="app.js"></script>
+
+        <button class="scroll-top" type="button" aria-label="Повернутися нагору">
+                <span></span>
+        </button>
 </body>
 </html>
